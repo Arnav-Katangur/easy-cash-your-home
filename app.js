@@ -1266,6 +1266,47 @@ function bindLeadForms() {
     }
     form.addEventListener("submit", handleLeadSubmit);
   });
+  enhanceAddressAutocomplete();
+}
+
+async function enhanceAddressAutocomplete() {
+  if (!window.google?.maps?.importLibrary) return;
+  let PlaceAutocompleteElement;
+  try {
+    ({ PlaceAutocompleteElement } = await google.maps.importLibrary("places"));
+  } catch (err) {
+    console.warn("Google Places library failed to load", err);
+    return;
+  }
+
+  const inputs = app.querySelectorAll(
+    '[data-lead-form] input[name="address"]:not([data-autocomplete-bound])'
+  );
+  inputs.forEach((input) => {
+    input.dataset.autocompleteBound = "true";
+
+    const hidden = document.createElement("input");
+    hidden.type = "hidden";
+    hidden.name = "address";
+
+    const ac = new PlaceAutocompleteElement({
+      includedRegionCodes: ["us"],
+    });
+    ac.classList.add("address-autocomplete");
+
+    input.replaceWith(ac);
+    ac.after(hidden);
+
+    ac.addEventListener("gmp-select", async ({ placePrediction }) => {
+      try {
+        const place = placePrediction.toPlace();
+        await place.fetchFields({ fields: ["formattedAddress"] });
+        hidden.value = place.formattedAddress || "";
+      } catch (err) {
+        console.warn("Place fetch failed", err);
+      }
+    });
+  });
 }
 
 function bindScrollButtons() {
