@@ -1304,6 +1304,34 @@ async function enhanceAddressAutocomplete() {
       types: "address",
       proximity: { lng: -77.436, lat: 37.541 },
     };
+    searchBox.theme = {
+      variables: {
+        fontFamily: '"Manrope", sans-serif',
+        fontWeight: "500",
+        unit: "16px",
+        padding: "0.9rem",
+        borderRadius: "16px",
+        colorText: "#163126",
+        colorBackground: "rgba(255, 255, 255, 0.9)",
+        boxShadow: "none",
+      },
+      cssText: `
+        .Input {
+          padding-left: 2.75rem !important;
+          font-family: "Manrope", sans-serif !important;
+          font-size: 1rem !important;
+          font-weight: 500 !important;
+          line-height: 1.4 !important;
+          height: auto !important;
+        }
+        .SearchIcon {
+          left: 0.9rem !important;
+        }
+        .Suggestion, .ResultName, .ResultDescription {
+          font-family: "Manrope", sans-serif !important;
+        }
+      `,
+    };
     searchBox.classList.add("address-autocomplete");
     if (input.id) searchBox.id = input.id;
 
