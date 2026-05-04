@@ -8,7 +8,7 @@ const CONTACT = {
   responseTime: "within 24 business hours",
 };
 
-const FORM_ENDPOINT = "";
+const FORM_ENDPOINT = "/api/leads";
 const LOCAL_LEADS_KEY = "easy-cash-your-home-leads";
 
 const NAV_ITEMS = [
@@ -518,11 +518,11 @@ function leadForm(options = {}) {
         <input type="hidden" name="city" value="${escapeHtml(cityName)}" />
         <div class="input-stack">
           <label for="${context}-address">Property address</label>
-          <input id="${context}-address" name="address" type="text" placeholder="123 Main St, Richmond, VA" required />
+          <input id="${context}-address" name="address" type="text" placeholder="123 Main St, Richmond, VA" />
         </div>
         <div class="input-stack">
           <label for="${context}-name">Your name</label>
-          <input id="${context}-name" name="name" type="text" placeholder="Alex Morgan" required />
+          <input id="${context}-name" name="name" type="text" placeholder="Alex Morgan" />
         </div>
         <div class="input-stack">
           <label for="${context}-phone">Phone number</label>
