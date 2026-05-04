@@ -1,19 +1,9 @@
 .address-autocomplete {
   display: block;
   width: 100%;
-}
-.address-autocomplete::part(input) {
-  width: 100%;
-  font: inherit;
-  padding: 0.75rem 1rem;
-  border-radius: 12px;
-  border: 1px solid rgba(31, 91, 71, 0.18);
-  background: var(--surface, #fffaf2);
-  color: inherit;
-}
-.address-autocomplete::part(input):focus {
-  outline: 2px solid rgba(31, 91, 71, 0.4);
-  outline-offset: 2px;
+  --MapboxSearchBox-Font-Family: inherit;
+  --MapboxSearchBox-Border-Radius: 12px;
+  --MapboxSearchBox-Background: var(--surface, #fffaf2);
 }
 
 :root {

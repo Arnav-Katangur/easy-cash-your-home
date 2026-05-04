@@ -1270,14 +1270,11 @@ function bindLeadForms() {
 }
 
 async function enhanceAddressAutocomplete() {
-  if (!window.google?.maps?.importLibrary) return;
-  let PlaceAutocompleteElement;
-  try {
-    ({ PlaceAutocompleteElement } = await google.maps.importLibrary("places"));
-  } catch (err) {
-    console.warn("Google Places library failed to load", err);
-    return;
-  }
+  const token = window.MAPBOX_TOKEN;
+  if (!token || token === "YOUR_MAPBOX_TOKEN") return;
+
+  await waitForMapboxSearch();
+  if (!window.mapboxsearch) return;
 
   const inputs = app.querySelectorAll(
     '[data-lead-form] input[name="address"]:not([data-autocomplete-bound])'
@@ -1289,23 +1286,38 @@ async function enhanceAddressAutocomplete() {
     hidden.type = "hidden";
     hidden.name = "address";
 
-    const ac = new PlaceAutocompleteElement({
-      includedRegionCodes: ["us"],
-    });
-    ac.classList.add("address-autocomplete");
+    const searchBox = document.createElement("mapbox-search-box");
+    searchBox.accessToken = token;
+    searchBox.options = {
+      language: "en",
+      country: "us",
+      types: "address",
+      proximity: { lng: -77.436, lat: 37.541 },
+    };
+    searchBox.classList.add("address-autocomplete");
+    if (input.id) searchBox.id = input.id;
 
-    input.replaceWith(ac);
-    ac.after(hidden);
+    input.replaceWith(searchBox);
+    searchBox.after(hidden);
 
-    ac.addEventListener("gmp-select", async ({ placePrediction }) => {
-      try {
-        const place = placePrediction.toPlace();
-        await place.fetchFields({ fields: ["formattedAddress"] });
-        hidden.value = place.formattedAddress || "";
-      } catch (err) {
-        console.warn("Place fetch failed", err);
-      }
+    searchBox.addEventListener("retrieve", (event) => {
+      const feature = event.detail?.features?.[0];
+      if (!feature) return;
+      const props = feature.properties || {};
+      hidden.value = props.full_address || props.place_formatted || props.name || "";
     });
+  });
+}
+
+function waitForMapboxSearch() {
+  if (window.mapboxsearch) return Promise.resolve();
+  return new Promise((resolve) => {
+    const script = document.getElementById("search-js");
+    if (!script) return resolve();
+    if (window.mapboxsearch) return resolve();
+    script.addEventListener("load", () => resolve(), { once: true });
+    script.addEventListener("error", () => resolve(), { once: true });
+    setTimeout(resolve, 4000);
   });
 }
 
