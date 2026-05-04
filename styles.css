@@ -1,9 +1,37 @@
 .address-autocomplete {
   display: block;
   width: 100%;
-  --MapboxSearchBox-Font-Family: inherit;
-  --MapboxSearchBox-Border-Radius: 12px;
-  --MapboxSearchBox-Background: var(--surface, #fffaf2);
+  --MapboxSearchBox-Font-Family: "Manrope", sans-serif;
+  --MapboxSearchBox-Border-Radius: 16px;
+  --MapboxSearchBox-Background: rgba(255, 255, 255, 0.9);
+  --MapboxSearchBox-Color: var(--ink);
+  --MapboxSearchBox-SuggestionList-Font-Family: "Manrope", sans-serif;
+}
+.address-autocomplete::part(input) {
+  font-family: "Manrope", sans-serif;
+  padding: 0.9rem 1rem 0.9rem 2.75rem;
+  border-radius: 16px;
+  border: 1px solid rgba(22, 49, 38, 0.14);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--ink);
+  width: 100%;
+}
+.address-autocomplete::part(input):focus {
+  outline: none;
+  border-color: rgba(31, 91, 71, 0.6);
+  box-shadow: 0 0 0 4px rgba(31, 91, 71, 0.12);
+  background: white;
+}
+
+.input-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 480px) {
+  .input-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 :root {

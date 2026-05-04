@@ -515,10 +515,20 @@ function leadForm(options = {}) {
       <p>${escapeHtml(description)}</p>
       <form class="form-grid" data-lead-form data-context="${escapeHtml(context)}">
         <input type="hidden" name="context" value="${escapeHtml(context)}" />
-        <input type="hidden" name="city" value="${escapeHtml(cityName)}" />
+        <input type="hidden" name="pageCity" value="${escapeHtml(cityName)}" />
         <div class="input-stack">
           <label for="${context}-address">Property address</label>
           <input id="${context}-address" name="address" type="text" placeholder="123 Main St, Richmond, VA" />
+        </div>
+        <div class="input-row">
+          <div class="input-stack">
+            <label for="${context}-city">City</label>
+            <input id="${context}-city" name="city" type="text" placeholder="Richmond" autocomplete="address-level2" />
+          </div>
+          <div class="input-stack">
+            <label for="${context}-state">State</label>
+            <input id="${context}-state" name="state" type="text" placeholder="VA" autocomplete="address-level1" />
+          </div>
         </div>
         <div class="input-stack">
           <label for="${context}-name">Your name</label>
@@ -1305,6 +1315,17 @@ async function enhanceAddressAutocomplete() {
       if (!feature) return;
       const props = feature.properties || {};
       hidden.value = props.full_address || props.place_formatted || props.name || "";
+
+      const ctx = props.context || {};
+      const cityName = ctx.place?.name || ctx.locality?.name || "";
+      const stateCode = ctx.region?.region_code || ctx.region?.name || "";
+
+      const form = searchBox.closest("form");
+      if (!form) return;
+      const cityField = form.querySelector('input[name="city"]');
+      const stateField = form.querySelector('input[name="state"]');
+      if (cityField && cityName) cityField.value = cityName;
+      if (stateField && stateCode) stateField.value = stateCode;
     });
   });
 }

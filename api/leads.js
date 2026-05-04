@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { address, name, phone, email, message, context, city } = req.body ?? {};
+  const { address, name, phone, email, message, context, city, state } = req.body ?? {};
 
   if (!phone || !String(phone).trim()) {
     return res.status(400).json({ error: "Phone is required" });
@@ -18,10 +18,11 @@ export default async function handler(req, res) {
 
   try {
     await sql`
-      insert into leads (context, city, address, name, phone, email, message, user_agent, ip)
+      insert into leads (context, city, state, address, name, phone, email, message, user_agent, ip)
       values (
         ${context ?? null},
         ${city ?? null},
+        ${state ?? null},
         ${address ?? null},
         ${name ?? null},
         ${phone},
