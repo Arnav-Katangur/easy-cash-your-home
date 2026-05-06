@@ -1,8 +1,8 @@
 const CONTACT = {
   brand: "Easy Cash Your Home",
   legalName: "Easy Property Solutions LLC",
-  phoneDisplay: "(804) 621-5298",
-  phoneHref: "8046215298",
+  phoneDisplay: "(804) 888-8888",
+  phoneHref: "8048888888",
   email: "arksinvestments@gmail.com",
   serviceArea: "Richmond and nearby Virginia communities",
   responseTime: "within 24 business hours",
