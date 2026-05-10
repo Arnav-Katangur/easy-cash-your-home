@@ -1387,13 +1387,30 @@ function bindUi() {
   bindScrollButtons();
 }
 
+let isInitialRender = true;
+
 function render() {
   const route = getRoute();
+
+  // On the initial load at the home route, the static HTML in index.html is
+  // already correct - just hydrate (bind handlers, render nav/footer).
+  if (isInitialRender && route === "/" && app.dataset.preRendered === "true") {
+    isInitialRender = false;
+    renderNav(route);
+    renderFooter();
+    bindUi();
+    header.classList.remove("is-nav-open");
+    navToggle.setAttribute("aria-expanded", "false");
+    return;
+  }
+  isInitialRender = false;
+
   const page = resolvePage(route);
 
   renderNav(route);
   renderFooter();
   app.innerHTML = page.html;
+  app.dataset.preRendered = "false";
   bindUi();
 
   document.title = `${page.title} | ${CONTACT.brand}`;
