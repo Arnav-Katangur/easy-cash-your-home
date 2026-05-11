@@ -3,7 +3,7 @@ const CONTACT = {
   legalName: "Easy Property Solutions LLC",
   phoneDisplay: "(804) 506-3646",
   phoneHref: "8045063646",
-  email: "arksinvestments@gmail.com",
+  email: "contact@easycashyourhome.com",
   serviceArea: "Richmond and nearby Virginia communities",
   responseTime: "within 24 business hours",
 };
